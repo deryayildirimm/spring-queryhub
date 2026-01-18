@@ -1,4 +1,6 @@
-package com.queryhub.spring_queryhub.entity;
+package com.queryhub.spring_queryhub.dto.response;
+
+import com.queryhub.spring_queryhub.entity.CourseLevel;
 
 public record CourseResponse(
         String title,

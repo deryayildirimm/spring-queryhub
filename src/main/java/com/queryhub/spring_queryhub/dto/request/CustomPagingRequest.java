@@ -1,5 +1,6 @@
-package com.queryhub.spring_queryhub.entity;
+package com.queryhub.spring_queryhub.dto.request;
 
+import com.queryhub.spring_queryhub.entity.SortDirection;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

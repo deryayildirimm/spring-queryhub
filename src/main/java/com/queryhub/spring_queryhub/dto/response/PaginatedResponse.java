@@ -1,10 +1,12 @@
-package com.queryhub.spring_queryhub.entity;
+package com.queryhub.spring_queryhub.dto.response;
+
+import com.queryhub.spring_queryhub.entity.SortDirection;
 
 import java.util.List;
 
 public record PaginatedResponse<T>(
         List<T> items,
-        PageMeta metaData
+        PageMeta meta
 
 ) {
 

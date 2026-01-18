@@ -1,12 +1,14 @@
 package com.queryhub.spring_queryhub.controller;
 
-import com.queryhub.spring_queryhub.entity.*;
+import com.queryhub.spring_queryhub.dto.request.CourseCreateRequest;
+import com.queryhub.spring_queryhub.dto.request.CustomPagingRequest;
+import com.queryhub.spring_queryhub.dto.response.CourseResponse;
+import com.queryhub.spring_queryhub.dto.response.CustomPagingQuery;
+import com.queryhub.spring_queryhub.dto.response.PaginatedResponse;
 import com.queryhub.spring_queryhub.service.CourseService;
 import jakarta.validation.Valid;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,10 +24,11 @@ public class CourseController {
 
 
     @PostMapping
-    public ResponseEntity<CourseResponse> createAccount(
+    public ResponseEntity<CourseResponse> createController(
             @RequestBody @Valid CourseCreateRequest courseCreateRequest) {
 
-        return ResponseEntity.ok(courseService.createCourse(courseCreateRequest));
+        return ResponseEntity.status(HttpStatus.CREATED).
+                body(courseService.createCourse(courseCreateRequest));
     }
 
     // /courses?pageNumber=1&pageSize=20&sortBy=createdAt&sortDirection=DESC

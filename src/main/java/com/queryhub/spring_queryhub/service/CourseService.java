@@ -1,5 +1,9 @@
 package com.queryhub.spring_queryhub.service;
 
+import com.queryhub.spring_queryhub.dto.request.CourseCreateRequest;
+import com.queryhub.spring_queryhub.dto.response.CourseResponse;
+import com.queryhub.spring_queryhub.dto.request.CustomPagingRequest;
+import com.queryhub.spring_queryhub.dto.response.PaginatedResponse;
 import com.queryhub.spring_queryhub.entity.*;
 import com.queryhub.spring_queryhub.exception.*;
 import com.queryhub.spring_queryhub.mapper.CourseMapper;

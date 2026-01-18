@@ -1,5 +1,7 @@
 package com.queryhub.spring_queryhub.mapper;
 
+import com.queryhub.spring_queryhub.dto.request.CourseCreateRequest;
+import com.queryhub.spring_queryhub.dto.response.CourseResponse;
 import com.queryhub.spring_queryhub.entity.*;
 
 public class CourseMapper {

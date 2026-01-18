@@ -1,5 +1,7 @@
-package com.queryhub.spring_queryhub.entity;
+package com.queryhub.spring_queryhub.dto.response;
 
+import com.queryhub.spring_queryhub.dto.request.CustomPagingRequest;
+import com.queryhub.spring_queryhub.entity.SortDirection;
 import org.springframework.web.bind.annotation.RequestParam;
 
 public record CustomPagingQuery(
