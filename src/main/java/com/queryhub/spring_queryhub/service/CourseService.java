@@ -1,6 +1,8 @@
 package com.queryhub.spring_queryhub.service;
 
 import com.queryhub.spring_queryhub.dto.request.CourseCreateRequest;
+import com.queryhub.spring_queryhub.dto.request.CourseSearchRequest;
+import com.queryhub.spring_queryhub.dto.response.CourseListItem;
 import com.queryhub.spring_queryhub.dto.response.CourseResponse;
 import com.queryhub.spring_queryhub.dto.request.CustomPagingRequest;
 import com.queryhub.spring_queryhub.dto.response.PaginatedResponse;
@@ -10,13 +12,15 @@ import com.queryhub.spring_queryhub.mapper.CourseMapper;
 import com.queryhub.spring_queryhub.repository.CategoryRepository;
 import com.queryhub.spring_queryhub.repository.CourseRepository;
 import com.queryhub.spring_queryhub.repository.InstructorRepository;
+import com.queryhub.spring_queryhub.specification.CourseSpecBuilder;
+import com.queryhub.spring_queryhub.view.CourseListView;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
-
 
 @Service
 public class CourseService {
@@ -49,7 +53,7 @@ public class CourseService {
         boolean check = courseRepository.existsByTitleAndInstructor(courseRequest.title(), instructor);
         HandleThrow.throwIf(check, CourseAlreadyExistException::new);
 
-        Course course =   CourseMapper.toEntity(courseRequest, instructor, category);
+        Course course = CourseMapper.toEntity(courseRequest, instructor, category);
 
         courseRepository.save(course);
 
@@ -80,6 +84,23 @@ public class CourseService {
         );
 
         return new PaginatedResponse<>(items, meta);
+    }
+
+    public Page<CourseListItem> searchCourses(CourseSearchRequest req,  Pageable pageable) {
+
+        Specification<Course> spec = CourseSpecBuilder.build(req);
+
+        return courseRepository.findBy(spec, q ->
+                q.as(CourseListView.class)
+                        .page(pageable))
+                .map(v -> new CourseListItem(
+                        v.getId(),
+                        v.getTitle(),
+                        v.getPrice(),
+                        v.getCategory() != null ? v.getCategory().getName() : null ,
+                        v.getInstructor() != null ? v.getInstructor().getName() : null
+                ));
+
     }
 
 
