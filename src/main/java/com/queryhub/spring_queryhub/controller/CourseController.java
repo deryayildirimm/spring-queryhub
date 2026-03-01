@@ -2,18 +2,15 @@ package com.queryhub.spring_queryhub.controller;
 
 import com.queryhub.spring_queryhub.dto.request.CourseCreateRequest;
 import com.queryhub.spring_queryhub.dto.request.CourseSearchWithPagingRequest;
-import com.queryhub.spring_queryhub.dto.request.CustomPagingRequest;
 import com.queryhub.spring_queryhub.dto.response.CourseListItem;
 import com.queryhub.spring_queryhub.dto.response.CourseResponse;
 import com.queryhub.spring_queryhub.dto.response.CustomPagingQuery;
 import com.queryhub.spring_queryhub.dto.response.PaginatedResponse;
-import com.queryhub.spring_queryhub.entity.Course;
 import com.queryhub.spring_queryhub.service.CourseService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,16 +35,15 @@ public class CourseController {
                 body(courseService.createCourse(courseCreateRequest));
     }
 
-    // /courses?pageNumber=1&pageSize=20&sortBy=createdAt&sortDirection=DESC
+    // /courses?pageNumber=1&pageSize=20&sortBy=created&sortDirection=DESC
     @GetMapping
-    public ResponseEntity<PaginatedResponse<CourseResponse>> list(@Valid CustomPagingQuery query) {
-        CustomPagingRequest paging = query.toRequest();
-        return ResponseEntity.ok(courseService.listCourses(paging));
+    public ResponseEntity<PaginatedResponse<CourseResponse>> list(@Valid @ModelAttribute CustomPagingQuery query) {
+        return ResponseEntity.ok(courseService.listCourses(query.toRequest()));
     }
 
     @PostMapping("/search")
     public Page<CourseListItem> search(@Valid @RequestBody CourseSearchWithPagingRequest body) {
-        Pageable pageable = body.pagingRequest().toPageable(Set.of("createdAt","price","rating","title"));
+        Pageable pageable = body.pagingRequest().toPageable(Set.of("created","price","rating","title"));
         return courseService.searchCourses(body.searchRequest(), pageable);
     }
 

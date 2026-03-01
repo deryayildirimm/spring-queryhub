@@ -33,7 +33,7 @@ public class CourseService {
     private final CategoryRepository categoryRepository;
 
     private static final Set<String> ALLOWED_SORT_FIELDS =
-            Set.of("id", "title", "price", "rating", "createdAt");
+            Set.of("id", "title", "price", "rating", "created");
 
     public CourseService(CourseRepository courseRepository,
                          InstructorRepository instructorRepository,
