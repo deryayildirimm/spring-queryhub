@@ -1,10 +1,15 @@
 package com.queryhub.spring_queryhub.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.net.URI;
@@ -26,6 +31,19 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CourseAlreadyExistException.class)
     public ResponseEntity<ProblemDetail> handleCourseAlreadyExist(CourseAlreadyExistException ex, HttpServletRequest request) {
         return err(HttpStatus.CONFLICT, ex.getMessage(), request);
+    }
+
+    @ExceptionHandler({
+            MethodArgumentNotValidException.class,
+            BindException.class,
+            MethodArgumentTypeMismatchException.class,
+            MissingServletRequestParameterException.class,
+            ConstraintViolationException.class,
+            InvalidSortFieldException.class,
+            InvalidPaginationException.class
+    })
+    public ResponseEntity<ProblemDetail> handleBadRequest(Exception ex, HttpServletRequest request) {
+        return err(HttpStatus.BAD_REQUEST, ex.getMessage(), request);
     }
 
     @ExceptionHandler(Exception.class)

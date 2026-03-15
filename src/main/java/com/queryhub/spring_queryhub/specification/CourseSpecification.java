@@ -22,19 +22,19 @@ public final class CourseSpecification {
     }
 
     public static Specification<Course> priceGte(BigDecimal min) {
-        return ((root, query, cb) -> cb.greaterThanOrEqualTo(root.get("price"), min));
+        return (root, query, cb) -> cb.ge(root.get("price"), min.doubleValue());
     }
 
     public static Specification<Course> priceLte(BigDecimal max) {
-        return ((root, query, cb) -> cb.lessThanOrEqualTo(root.get("price"), max));
+        return (root, query, cb) -> cb.le(root.get("price"), max.doubleValue());
     }
 
     public static Specification<Course> createdAfter(LocalDateTime from) {
-        return (root, q, cb) -> cb.greaterThanOrEqualTo(root.get("createdAt"), from);
+        return (root, q, cb) -> cb.greaterThanOrEqualTo(root.get("created"), from);
     }
 
     public static Specification<Course> createdBefore(LocalDateTime to) {
-        return (root, q, cb) -> cb.lessThanOrEqualTo(root.get("createdAt"), to);
+        return (root, q, cb) -> cb.lessThanOrEqualTo(root.get("created"), to);
     }
 
     // ManyToOne: category.name
@@ -43,10 +43,10 @@ public final class CourseSpecification {
                 cb.equal(cb.lower(root.get("category").get("name")), name.toLowerCase());
     }
 
-    // ManyToOne: instructor.fullName
+    // ManyToOne: instructor.name
     public static Specification<Course> hasInstructorName(String fullName) {
         return (root, q, cb) ->
-                cb.equal(cb.lower(root.get("instructor").get("fullName")), fullName.toLowerCase());
+                cb.equal(cb.lower(root.get("instructor").get("name")), fullName.toLowerCase());
     }
 
     public static Specification<Course> search (String keyword) {
@@ -54,7 +54,7 @@ public final class CourseSpecification {
             String like = "%" + keyword.toLowerCase() + "%";
             return cb.or(
                     cb.like(cb.lower(root.get("title")) , like),
-                    cb.like(cb.lower(root.get("instructor").get("fullName")), like),
+                    cb.like(cb.lower(root.get("instructor").get("name")), like),
                     cb.like(cb.lower(root.get("category").get("name")), like)
             );
         };
